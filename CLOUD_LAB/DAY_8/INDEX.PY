@@ -13,7 +13,6 @@ B = [[7, 8, 9],
 C = [[7, 8],
      [9, 10],
      [11, 12]]
-
 print("\nAddition of A and B:")
 for row in add_matrices(A, B):
     print(row)
