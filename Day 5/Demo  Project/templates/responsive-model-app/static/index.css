@@ -1,0 +1,54 @@
+body {
+    background-color: blueviolet;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+input[type="text"], input[type="submit"] {
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+}
+
+input[type="text"] {
+    width: 80%;
+}
+
+input[type="submit"] {
+    background-color: white;
+    color: blueviolet;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: lightgray;
+}
+
+.results {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    input[type="text"] {
+        width: 100%;
+    }
+}
