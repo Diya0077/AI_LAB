@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Wrapper to center everything */
+        .game-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Main game box */
+        .game-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            color: white;
+            animation: popIn 1s ease-in-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        /* Tic Tac Toe grid */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 15px;
+            justify-content: center;
+            margin: 20px auto;
+        }
+
+        /* Each cell */
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .cell:hover {
+            transform: scale(1.1);
+            background: #f1f1f1;
+        }
+
+        /* X & O Colors */
+        .x-move { color: #ff4b5c; text-shadow: 0 0 10px #ff4b5c; }
+        .o-move { color: #2ecc71; text-shadow: 0 0 10px #2ecc71; }
+
+        /* Status text */
+        #status {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        /* Button */
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            background: #ffb347;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #ff9800;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+        <div class="game-container">
+            <h1>🤪 Fool's Tic Tac Toe 🎨</h1>
+            <div class="board" id="board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            <p id="status">Player X's turn</p>
+            <button onclick="restartGame()">🔄 Restart</button>
+        </div>
+    </div>
+
+    <script>
+        const board = document.getElementById("board");
+        const cells = document.querySelectorAll(".cell");
+        const status = document.getElementById("status");
+        let currentPlayer = "X";
+        let gameActive = true;
+        let gameState = ["", "", "", "", "", "", "", "", ""];
+
+        const winningConditions = [
+            [0,1,2], [3,4,5], [6,7,8],
+            [0,3,6], [1,4,7], [2,5,8],
+            [0,4,8], [2,4,6]
+        ];
+
+        function checkWinner() {
+            for (let condition of winningConditions) {
+                let [a, b, c] = condition;
+                if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+                    status.textContent = `🎉 Player ${currentPlayer} wins! 🎉`;
+                    gameActive = false;
+                    return true;
+                }
+            }
+            if (!gameState.includes("")) {
+                status.textContent = "😮 It's a draw!";
+                gameActive = false;
+                return true;
+            }
+            return false;
+        }
+
+        function handleClick(e) {
+            const index = e.target.dataset.index;
+            if (!gameActive || gameState[index]) return;
+            gameState[index] = currentPlayer;
+            e.target.textContent = currentPlayer;
+            e.target.classList.add(currentPlayer === "X" ? "x-move" : "o-move");
+            
+            if (!checkWinner()) {
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+                status.textContent = `Player ${currentPlayer}'s turn`;
+            }
+        }
+
+        function restartGame() {
+            gameState.fill("");
+            gameActive = true;
+            currentPlayer = "X";
+            status.textContent = "Player X's turn";
+            cells.forEach(cell => {
+                cell.textContent = "";
+                cell.classList.remove("x-move", "o-move");
+            });
+        }
+
+        cells.forEach(cell => cell.addEventListener("click", handleClick));
+    </script>
+</body>
+</html>
